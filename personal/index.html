@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Site Web Inspiré de Seen.com</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.139.0/build/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+      }
+      #scene-container {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        pointer-events: none;
+      }
+      .content {
+        position: relative;
+        z-index: 1;
+        padding: 20px;
+        color: white;
+        text-align: center;
+        min-height: 100vh;
+      }
+      .section {
+        margin-bottom: 120px;
+        padding-top: 100px;
+      }
+      .section h2 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #ffffff;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+      }
+      .section p {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        color: #f3f4f6;
+        max-width: 800px;
+        margin: 0 auto;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+      #menu-container {
+        position: fixed;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+      }
+      #menu {
+        background-color: rgba(255, 255, 255, 0.06);
+        padding: 15px 30px;
+        border-radius: 30px;
+        display: flex;
+        gap: 30px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+      }
+      #menu:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+      #menu a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 1.3rem;
+        font-weight: 600;
+        transition: color 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
+        display: block;
+        padding: 12px 25px;
+        border-radius: 30px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+      #menu a:hover {
+        color: #00f5d4;
+        background-color: rgba(0, 245, 212, 0.15);
+        transform: scale(1.1);
+      }
+      #menu a.active-link {
+        color: #00f5d4;
+        background-color: rgba(0, 245, 212, 0.25);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      #menu a.active-link:hover {
+        transform: scale(1.15);
+      }
+      #menu-toggle {
+        display: none;
+        color: #ffffff;
+        font-size: 2rem;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        padding: 0;
+      }
+      .highlight {
+        color: #00f5d4;
+        font-weight: 700;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px 30px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #ffffff;
+        background-color: rgba(0, 245, 212, 0.2);
+        border: 2px solid #00f5d4;
+        border-radius: 30px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+      .btn:hover {
+        background-color: rgba(0, 245, 212, 0.35);
+        transform: scale(1.08);
+        border-color: #00f5d4;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+      }
+      .btn i {
+        margin-right: 10px;
+        font-size: 1.4rem;
+      }
+      #projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+      }
+      .project-card {
+        background-color: rgba(255, 255, 255, 0.08);
+        padding: 30px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        text-align: left;
+      }
+      .project-card:hover {
+        transform: translateY(-10px) scale(1.03);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+      .project-card h3 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #ffffff;
+      }
+      .project-card p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #e2e8f0;
+        margin-bottom: 20px;
+      }
+      .project-card a {
+        display: inline-flex;
+        align-items: center;
+        color: #00f5d4;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+      .project-card a:hover {
+        color: #ffffff;
+      }
+      .project-card i {
+        margin-left: 8px;
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+      }
+      .project-card a:hover i {
+        transform: translateX(5px);
+      }
+      #contact-form {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: left;
+        padding: 30px;
+        background-color: rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        margin-top: 30px;
+      }
+      #contact-form h3 {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 30px;
+        color: #ffffff;
+        text-align: center;
+      }
+      #contact-form .form-group {
+        margin-bottom: 25px;
+      }
+      #contact-form label {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #ffffff;
+        margin-bottom: 10px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+      #contact-form input,
+      #contact-form textarea {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.05);
+        color: #ffffff;
+        transition: all 0.3s ease;
+        outline: none;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      #contact-form input:focus,
+      #contact-form textarea:focus {
+        border-color: #00f5d4;
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      #contact-form textarea {
+        resize: vertical;
+        height: 150px;
+      }
+      #contact-form button {
+        width: 100%;
+        padding: 15px 30px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #ffffff;
+        background-color: #00f5d4;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+      }
+      #contact-form button:hover {
+        background-color: #00b4d8;
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+      }
+      #contact-form button:disabled {
+        background-color: rgba(0, 245, 212, 0.4);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+        text-shadow: none;
+      }
+      #snackbar {
+        visibility: hidden;
+        min-width: 250px;
+        margin-left: -125px;
+        background-color: #4caf50;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 16px;
+        position: fixed;
+        z-index: 3;
+        bottom: 30px;
+        left: 50%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+      #snackbar.show {
+        visibility: visible;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      }
+      @keyframes fadein {
+        from {
+          bottom: 0;
+          opacity: 0;
+        }
+        to {
+          bottom: 30px;
+          opacity: 1;
+        }
+      }
+      @keyframes fadeout {
+        from {
+          bottom: 30px;
+          opacity: 1;
+        }
+        to {
+          bottom: 0;
+          opacity: 0;
+        }
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 3;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(10px);
+      }
+      .modal-content {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+        padding: 40px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        position: relative;
+        width: 90%;
+        max-width: 800px;
+        text-align: left;
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .modal-header h2 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #ffffff;
+      }
+      .close-button {
+        color: #ffffff;
+        background-color: transparent;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+        padding: 0;
+        line-height: 1;
+      }
+      .close-button:hover {
+        opacity: 1;
+      }
+      .modal-body {
+        margin-bottom: 30px;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #e2e8f0;
+      }
+      .modal-footer {
+        text-align: right;
+      }
+      .modal-footer .btn {
+        margin: 0;
+      }
+      @media (max-width: 768px) {
+        #menu-container {
+          width: 100%;
+          left: 0;
+          top: 0;
+          transform: none;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px;
+          background-color: rgba(255, 255, 255, 0.06);
+          backdrop-filter: blur(12px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        #menu {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 60px;
+          left: 0;
+          width: 100%;
+        /*  background-color: rgba(255, 255, 255, 0.06);*/
+          background-color: rgb(184, 249, 228);
+          padding: 10px;
+          border-radius: 0;
+          box-shadow: none;
+          align-items: center;
+        }
+        #menu.active {
+          display: flex;
+        }
+        #menu a {
+          padding: 10px 20px;
+          font-size: 1.2rem;
+          width: 100%;
+          text-align: center;
+        }
+        #menu-toggle {
+          display: block;
+        }
+        .section h2 {
+          font-size: 2.5rem;
+        }
+        .section p {
+          font-size: 1.1rem;
+        }
+        #projects-grid {
+          grid-template-columns: 1fr;
+        }
+        .project-card {
+          padding: 20px;
+        }
+        .project-card h3 {
+          font-size: 1.5rem;
+        }
+        #contact-form {
+          padding: 20px;
+        }
+        #contact-form h3 {
+          font-size: 1.75rem;
+        }
+        .modal-content {
+          padding: 30px;
+        }
+        .modal-header h2 {
+          font-size: 1.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <div id="scene-container"></div>
+    <div id="menu-container">
+      <button id="menu-toggle">
+        <i class="material-icons">menu</i>
+      </button>
+      <div id="menu">
+        <a href="#home" class="active-link">Accueil</a>
+        <a href="#about">À Propos</a>
+        <a href="#projects">Projets</a>
+        <a href="#contact">Contact</a>
+        <a href="#" id="open-modal">Services</a>
+      </div>
+    </div>
+    <div class="content">
+      <section id="home" class="section">
+        <h2 class="text-4xl font-bold mb-4">
+          Bienvenue sur mon portfolio<span class="highlight">!</span>
+        </h2>
+        <p class="text-lg">
+          Découvrez mon univers créatif avec des animations 3D captivantes, mes projets et mes services. Contactez-moi pour donner vie à vos idées.
+        </p>
+        <a href="#projects" class="btn">
+          <i class="material-icons">explore</i>
+          Découvrir mes projets
+        </a>
+      </section>
+      <section id="about" class="section">
+        <h2>À Propos de Moi</h2>
+        <p>
+          Je suis passionné par la création d'expériences numériques innovantes. Mon expertise combine design créatif, développement web de pointe, animations 3D immersives et la création d'applications mobiles avec Flutter pour offrir des solutions uniques et percutantes.
+        </p>
+        <p>
+          Que vous ayez besoin d'un site web vitrine, d'une application web complexe, d'une expérience interactive en 3D ou d'une application mobile, je suis là pour vous accompagner de la conception à la réalisation.
+        </p>
+      </section>
+      <section id="projects" class="section">
+        <h2>Mes Projets</h2>
+        <div id="projects-grid">
+          <div class="project-card">
+            <h3>Projet 1</h3>
+            <p>
+              Description du projet 1. Ce projet met en valeur mes compétences en développement web et en design.
+            </p>
+            <a href="#">
+              Voir le projet
+              <i class="material-icons">arrow_forward</i>
+            </a>
+          </div>
+          <div class="project-card">
+            <h3>Projet 2</h3>
+            <p>
+              Description du projet 2. Ce projet démontre ma capacité à créer des expériences utilisateur immersives et interactives.
+            </p>
+            <a href="#">
+              Voir le projet
+              <i class="material-icons">arrow_forward</i>
+            </a>
+          </div>
+          <div class="project-card">
+            <h3>Projet 3</h3>
+            <p>
+              Description du projet 3. Un exemple de mon travail en animation 3D et en intégration web.
+            </p>
+            <a href="#">
+              Voir le projet
+              <i class="material-icons">arrow_forward</i>
+            </a>
+          </div>
+        </div>
+        <a href="#" class="btn">
+          <i class="material-icons">work</i>
+          Voir tous mes projets
+        </a>
+      </section>
+      <section id="contact" class="section">
+        <h2>Contactez-Moi</h2>
+        <p>
+          Prêt à donner vie à votre projet ? N'hésitez pas à me contacter pour discuter de vos besoins et découvrir comment je peux vous aider à atteindre vos objectifs.
+        </p>
+        <form id="contact-form">
+          <h3>Envoyez-moi un message</h3>
+          <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" id="name" name="name" placeholder="Votre nom" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Votre adresse email" required />
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Votre message" required></textarea>
+          </div>
+          <button type="submit" id="submit-button">
+            <i class="material-icons">send</i>
+            Envoyer votre message
+          </button>
+        </form>
+      </section>
+    </div>
+    <div id="snackbar">Message envoyé avec succès !</div>
+    <div id="services-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Mes Services</h2>
+          <button class="close-button" id="close-modal">
+            <i class="material-icons">close</i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Je propose une gamme complète de services pour répondre à vos besoins en matière de présence en ligne et d'expérience numérique :
+          </p>
+          <ul>
+            <li><strong>Conception et développement web :</strong> Création de sites web vitrines, sites e-commerce, applications web sur mesure avec Python, Django et Wordpress.</li>
+            <li><strong>Applications mobiles :</strong> Développement d'applications mobiles simples et de niveau moyen avec Flutter.</li>
+            <li><strong>Animations 3D :</strong> Modélisation, animation et intégration 3D pour des expériences immersives.</li>
+            <li><strong>Design UX/UI :</strong> Conception d'interfaces utilisateur intuitives et esthétiques.</li>
+            <li><strong>Marketing digital :</strong> Stratégies de référencement, publicité en ligne, gestion des réseaux sociaux.</li>
+            <li><strong>Consulting :</strong> Accompagnement et conseils pour optimiser votre présence en ligne.</li>
+          </ul>
+          <p>
+            Contactez-moi pour discuter de votre projet et découvrir comment je peux vous aider à atteindre vos objectifs.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <a href="#contact" class="btn">
+            <i class="material-icons">mail</i>
+            Contactez-moi
+          </a>
+        </div>
+      </div>
+    </div>
+    <script>
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x222222);
+      const sceneContainer = document.getElementById("scene-container");
+      sceneContainer.appendChild(renderer.domElement);
+      const geometry = new THREE.TorusGeometry( 3, 1, 16, 100 );
+      const material = new THREE.MeshStandardMaterial({ color: 0x00f5d4, roughness: 0.2, metalness: 0.8, emissive: 0x002020 });
+      const torus = new THREE.Mesh(geometry, material);
+      scene.add(torus);
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(1, 1, 2);
+      scene.add(directionalLight);
+      const ambientLight = new THREE.AmbientLight(0x404040);
+      scene.add(ambientLight);
+      camera.position.z = 5;
+      function animate() {
+        requestAnimationFrame(animate);
+        torus.rotation.x += 0.01;
+        torus.rotation.y += 0.01;
+        renderer.render(scene, camera);
+      }
+      animate();
+      window.addEventListener('resize', () => {
+        const newWidth = window.innerWidth;
+        const newHeight = window.innerHeight;
+        camera.aspect = newWidth / newHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(newWidth, newHeight);
+      });
+      document.addEventListener('scroll', () => {
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('#menu a');
+        let currentSectionId = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          if (window.scrollY >= sectionTop - 150 && window.scrollY < sectionTop + sectionHeight - 150) {
+            currentSectionId = section.getAttribute('id');
+          }
+        });
+        navLinks.forEach(link => {
+          link.classList.remove('active-link');if (link.getAttribute('href').slice(1) === currentSectionId) {
+            link.classList.add('active-link');
+          }
+        });
+      });
+      const navLinks = document.querySelectorAll('#menu a');
+      navLinks.forEach(link => {
+        link.addEventListener('mouseenter', (event) => {
+          event.target.style.color = '#00f5d4';
+          event.target.style.backgroundColor = 'rgba(0, 245, 212, 0.15)';
+          event.target.transform = 'scale(1.1)';
+        });
+        link.addEventListener('mouseleave', (event) => {
+          if (!event.target.classList.contains('active-link')) {
+            event.target.style.color = '#ffffff';
+            event.target.style.backgroundColor = 'transparent';
+            event.target.transform = 'scale(1)';
+          }
+        });
+      });
+      document.querySelectorAll('#menu a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href').substring(1);
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 100,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+      const contactForm = document.getElementById('contact-form');
+      const submitButton = document.getElementById('submit-button');
+      const snackbar = document.getElementById('snackbar');
+      contactForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        submitButton.disabled = true;
+        const formData = new FormData(contactForm);
+        fetch('/send-email.php', {
+          method: 'POST',
+          body: formData,
+        })
+        .then(response => {
+          if (response.ok) {
+            snackbar.textContent = 'Message envoyé avec succès !';
+          } else {
+            snackbar.textContent = 'Erreur lors de l\'envoi du message.';
+          }
+          snackbar.className = 'show';
+          setTimeout(() => {
+            snackbar.className = snackbar.className.replace('show', '');
+            submitButton.disabled = false;
+            contactForm.reset();
+          }, 3000);
+        })
+        .catch(error => {
+          snackbar.textContent = 'Erreur lors de l\'envoi du message.';
+          snackbar.className = 'show';
+          setTimeout(() => {
+            snackbar.className = snackbar.className.replace('show', '');
+            submitButton.disabled = false;
+          }, 3000);
+        });
+      });
+      const openModalBtn = document.getElementById('open-modal');
+      const closeModalBtn = document.getElementById('close-modal');
+      const modal = document.getElementById('services-modal');
+      openModalBtn.addEventListener('click', () => {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+      closeModalBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      });
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+          document.body.style.overflow = '';
+        }
+      });
+      const menuToggle = document.getElementById('menu-toggle');
+      const menu = document.getElementById('menu');
+      menuToggle.addEventListener('click', () => {
+        menu.classList.toggle('active');
+      });
+
+      // Fermer le menu lorsqu'un lien est cliqué (sur les petits écrans)
+      document.querySelectorAll('#menu a').forEach(link => {
+        link.addEventListener('click', () => {
+          if (menu.classList.contains('active') && window.innerWidth < 768) {
+            menu.classList.remove('active');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
