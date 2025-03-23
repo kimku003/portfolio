@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog d'Astrologie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        #starfield-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        #main-content {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #ffdb58;
+        }
+
+        header p {
+            font-size: 1.1em;
+            font-weight: 400;
+            color: #eee;
+        }
+
+        nav {
+            margin-bottom: 20px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #83c5be;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #b4f8c8;
+        }
+
+        main {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        article {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #444;
+        }
+
+        article h2 {
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffdb58;
+        }
+
+        article p {
+            font-size: 1.1em;
+            font-weight: 400;
+            line-height: 1.7;
+            color: #ddd;
+        }
+
+        article img, article video {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        footer {
+            font-size: 0.9em;
+            color: #888;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+
+        .contact-methods {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .contact-methods a {
+            color: #83c5be;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+
+        .contact-methods a:hover {
+            color: #b4f8c8;
+        }
+
+        #about-content p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            color: #ddd;
+            text-align: left;
+        }
+
+        #contact-content p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            color: #ddd;
+            text-align: left;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="starfield-container">
+        <canvas id="starfield-canvas"></canvas>
+    </div>
+    <div id="main-content">
+        <header>
+            <h1>Agence d'Astrologie</h1>
+            <p>Découvrez les mystères des étoiles</p>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="#" data-section="home">Accueil</a></li>
+                <li><a href="#" data-section="about">À propos</a></li>
+                <li><a href="#" data-section="contact">Contact</a></li>
+            </ul>
+        </nav>
+        <main id="home-content">
+            <article>
+                <h2>Bienvenue sur notre blog</h2>
+                <p>
+                    Explorez les influences célestes et découvrez ce que les étoiles
+                    vous réservent. Nos astrologues experts partagent leurs connaissances
+                    et leurs idées pour vous guider dans votre voyage.
+                </p>
+            </article>
+            <article>
+                <h2>Les dernières prévisions astrologiques</h2>
+                <p>
+                    Consultez nos dernières prévisions pour votre signe du zodiaque
+                    et préparez-vous aux énergies à venir.
+                    <a href="#">Lire les prévisions</a>
+                </p>
+            </article>
+            <article>
+                <h2>Article avec image</h2>
+                <p>
+                    Voici un article intéressant avec une image magnifique.
+                </p>
+                <img src="https://placehold.co/600x400/EEE/31343C" alt="Image d'astrologie">
+                <p>
+                    L'image ci-dessus illustre un concept astrologique important.
+                </p>
+            </article>
+            <article>
+                <h2>Article avec vidéo</h2>
+                <p>
+                    Découvrez cette vidéo fascinante sur l'astrologie.
+                </p>
+                <video controls>
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas les vidéos HTML5.
+                </video>
+                <p>
+                    La vidéo ci-dessus explore en profondeur un sujet astrologique.
+                </p>
+            </article>
+        </main>
+        <main id="about-content" class="hidden">
+            <h2>À propos de notre agence</h2>
+            <p>
+                Notre agence est composée d'une équipe d'astrologues passionnés
+                et expérimentés qui se consacrent à fournir des conseils
+                personnalisés et des perspectives éclairantes à nos clients.
+                Nous croyons que l'astrologie est un outil puissant de
+                connaissance de soi et de croissance personnelle, et nous
+                nous engageons à vous aider à exploiter sa sagesse.
+            </p>
+        </main>
+        <main id="contact-content" class="hidden">
+            <h2>Contactez-nous</h2>
+            <p>
+                Nous sommes là pour répondre à vos questions et vous fournir
+                l'assistance dont vous avez besoin. N'hésitez pas à nous
+                contacter en utilisant les méthodes ci-dessous.
+            </p>
+            <div class="contact-methods">
+                <a href="mailto:contact@agenceastrologie.com">Envoyer un email</a>
+                <a href="https://wa.me/1234567890">Contacter sur WhatsApp</a>
+            </div>
+        </main>
+        <footer>
+            <p>© 2024 Agence d'Astrologie. Tous droits réservés.</p>
+        </footer>
+    </div>
+
+    <script>
+       const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('starfield-canvas') });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000);
+
+        const stars = [];
+        const starCount = 2000;
+
+        for (let i = 0; i < starCount; i++) {
+            const x = (Math.random() - 0.5) * 2000;
+            const y = (Math.random() - 0.5) * 2000;
+            const z = -Math.random() * 1000;
+
+            const baseSize = 0.5;
+            const sizeVariation = Math.random() * 0.5;
+            const geometry = new THREE.SphereGeometry(baseSize + sizeVariation, 8, 8);
+
+            const baseColor = new THREE.Color(0xffffff);
+            const colorVariation = Math.random() * 0.05;
+            baseColor.offsetHSL(colorVariation, 0, 0);
+            const material = new THREE.MeshBasicMaterial({ color: baseColor });
+
+            const star = new THREE.Mesh(geometry, material);
+            star.position.set(x, y, z);
+            stars.push(star);
+            scene.add(star);
+        }
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            stars.forEach(star => {
+                const baseSpeed = 0.1;
+                const speedVariation = (Math.random() - 0.5) * 0.02;
+                star.position.z += baseSpeed + speedVariation;
+                if (star.position.z > 200) {
+                    star.position.z = -1000;
+                    star.position.x = (Math.random() - 0.5) * 2000;
+                    star.position.y = (Math.random() - 0.5) * 2000;
+                }
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            const newWidth = window.innerWidth;
+            const newHeight = window.innerHeight;
+            camera.aspect = newWidth / newHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(newWidth, newHeight);
+        });
+
+        document.querySelectorAll('nav ul li a').forEach(anchor => {
+            anchor.addEventListener('click', function (event) {
+                event.preventDefault();
+                const targetSection = this.getAttribute('data-section');
+                document.querySelectorAll('main').forEach(section => {
+                    section.classList.add('hidden');
+                    section.classList.remove('active');
+                });
+                document.getElementById(targetSection + '-content').classList.remove('hidden');
+                document.getElementById(targetSection + '-content').classList.add('active');
+            });
+        });
+
+        document.querySelector('nav ul li a[data-section="home"]').click();
+    </script>
+</body>
+</html>
+
