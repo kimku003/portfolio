@@ -197,6 +197,49 @@
         .star-rating input:checked ~ label {
             color: #ffdb58;
         }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        form input, form textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        form button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #83c5be;
+            color: #fff;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #b4f8c8;
+        }
+
+        .read-more {
+            color: #83c5be;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .read-more:hover {
+            color: #b4f8c8;
+        }
+
+        .more-text {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -294,6 +337,89 @@
                 </div>
                 <p id="star-rating-count">Note moyenne : 0 étoiles</p>
             </article>
+            <article>
+                <h2>Comprendre l'astrologie pour débutants</h2>
+                <p>
+                    Découvrez les bases et les influences de l'astrologie pour les débutants.
+                </p>
+                <img src="https://www.aucoteduranie.com/wp-content/uploads/2024/01/1706168602_comprendre-lastrologie-pour-debutants-bases-et-influences-1.jpg" alt="Comprendre l'astrologie pour débutants">
+                <p>
+                    L'image ci-dessus illustre les concepts de base de l'astrologie.
+                </p>
+                <div class="star-rating">
+                    <input type="radio" id="star5_4" name="rating_4" value="5">
+                    <label for="star5_4" title="5 stars">★</label>
+                    <input type="radio" id="star4_4" name="rating_4" value="4">
+                    <label for="star4_4" title="4 stars">★</label>
+                    <input type="radio" id="star3_4" name="rating_4" value="3">
+                    <label for="star3_4" title="3 stars">★</label>
+                    <input type="radio" id="star2_4" name="rating_4" value="2">
+                    <label for="star2_4" title="2 stars">★</label>
+                    <input type="radio" id="star1_4" name="rating_4" value="1">
+                    <label for="star1_4" title="1 star">★</label>
+                </div>
+                <p id="star-rating-count">Note moyenne : 0 étoiles</p>
+            </article>
+            <article>
+                <h2>Signification de l'astrologie</h2>
+                <p>
+                    Explorez la signification profonde de l'astrologie et comment elle peut influencer votre vie.
+                </p>
+                <img src="https://3trillion.org/wp-content/uploads/2023/03/Comprendre-la-signification-de-lastrologie.jpg" alt="Signification de l'astrologie">
+                <p>
+                    L'image ci-dessus montre les différentes significations de l'astrologie.
+                </p>
+                <div class="star-rating">
+                    <input type="radio" id="star5_5" name="rating_5" value="5">
+                    <label for="star5_5" title="5 stars">★</label>
+                    <input type="radio" id="star4_5" name="rating_5" value="4">
+                    <label for="star4_5" title="4 stars">★</label>
+                    <input type="radio" id="star3_5" name="rating_5" value="3">
+                    <label for="star3_5" title="3 stars">★</label>
+                    <input type="radio" id="star2_5" name="rating_5" value="2">
+                    <label for="star2_5" title="2 stars">★</label>
+                    <input type="radio" id="star1_5" name="rating_5" value="1">
+                    <label for="star1_5" title="1 star">★</label>
+                </div>
+                <p id="star-rating-count">Note moyenne : 0 étoiles</p>
+            </article>
+            <article>
+                <h2>Vidéo sur l'astrologie</h2>
+                <p>
+                    Regardez cette vidéo informative sur l'astrologie et ses effets.
+                </p>
+                <video controls>
+                    <source src="https://www.bing.com/videos/riverview/relatedvideo?&q=astrologie&&mid=38937846B621D097C95B38937846B621D097C95B&&FORM=VRDGAR" type="video/mp4">
+                    Votre navigateur ne supporte pas les vidéos HTML5.
+                </video>
+                <p>
+                    La vidéo ci-dessus explique en détail les effets de l'astrologie.
+                </p>
+                <div class="star-rating">
+                    <input type="radio" id="star5_6" name="rating_6" value="5">
+                    <label for="star5_6" title="5 stars">★</label>
+                    <input type="radio" id="star4_6" name="rating_6" value="4">
+                    <label for="star4_6" title="4 stars">★</label>
+                    <input type="radio" id="star3_6" name="rating_6" value="3">
+                    <label for="star3_6" title="3 stars">★</label>
+                    <input type="radio" id="star2_6" name="rating_6" value="2">
+                    <label for="star2_6" title="2 stars">★</label>
+                    <input type="radio" id="star1_6" name="rating_6" value="1">
+                    <label for="star1_6" title="1 star">★</label>
+                </div>
+                <p id="star-rating-count">Note moyenne : 0 étoiles</p>
+            </article>
+            <article>
+                <h2>La roue du zodiaque</h2>
+                <p>
+                    La roue du zodiaque est un cercle imaginaire de 360 degrés, c'est un peu comme une grande pizza dans le ciel, avec 12 parts égales. Chaque part, c'est un signe du zodiaque🍕✨. Ces signes sont nommés d'après les douze constellations que le Soleil semble traverser au cours de l'année, du point de vue de la Terre. On a le Bélier, le Taureau, les Gémeaux, le Cancer, le Lion, la Vierge, la Balance, le Scorpion, le Sagittaire, le Capricorne, le Verseau et les Poissons. Cette roue du zodiaque, n'est pas toute jeune ! Les premières mentions du zodiaque remontent à environ 1.700 avant J.-C.. 
+                    <span class="read-more" onclick="this.nextElementSibling.style.display='inline'; this.style.display='none';">Lire la suite</span>
+                    <span class="more-text">
+                        La roue du zodiaque est un outil essentiel en astrologie. Elle permet de tracer le mouvement des corps célestes à travers les signes du zodiaque et d'interpréter les présages ou les prédictions basées sur ces mouvements. Par exemple, si Mars, la planète de l'action et de l'énergie, entre dans le signe du Bélier, un signe connu pour son initiative et son courage, c'est un moment propice pour commencer de nouveaux projets ou prendre une décision audacieuse.
+                    </span>
+                </p>
+                <img src="https://c8.alamy.com/compfr/2ap2m2k/signe-astro-carte-celeste-de-l-hemisphere-nord-l-horoscope-universel-mondial-le-1er-janvier-2020-carte-du-ciel-de-nuit-detaillees-2ap2m2k.jpg" alt="La roue du zodiaque">
+            </article>
         </main>
         <main id="about-content" class="hidden">
             <h2>À propos de notre agence</h2>
@@ -317,6 +443,12 @@
                 <a href="mailto:contact@agenceastrologie.com">Envoyer un email</a>
                 <a href="https://wa.me/1234567890">Contacter sur WhatsApp</a>
             </div>
+            <form action="mailto:contact@agenceastrologie.com" method="post" enctype="text/plain">
+                <input type="text" name="name" placeholder="Votre nom" required>
+                <input type="email" name="email" placeholder="Votre email" required>
+                <textarea name="message" rows="5" placeholder="Votre message" required></textarea>
+                <button type="submit">Envoyer</button>
+            </form>
         </main>
         <footer>
             <p>© 2024 Agence d'Astrologie. Tous droits réservés.</p>
