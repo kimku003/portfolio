@@ -9,10 +9,12 @@
     <style>
         body {
             margin: 0;
-            height: 100vh;
+            height: 100%;
             font-family: 'Inter', sans-serif;
-            overflow: auto;
+            overflow-x: hidden;
             color: #fff;
+            display: flex;
+            flex-direction: column;
         }
 
         #starfield-container {
@@ -34,6 +36,8 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
             position: relative;
             z-index: 1;
+            overflow-y: auto;
+            flex-grow: 1;
         }
 
         header {
@@ -55,6 +59,12 @@
 
         nav {
             margin-bottom: 20px;
+            position: fixed; /* Changer de sticky à fixed */
+            top: 0;
+            background-color: rgba(0, 0, 0, 0.7); /* Garder le fond semi-transparent */
+            padding: 10px 0;
+            z-index: 10; /* Assurer que la navigation est au-dessus des autres éléments */
+            width: 100%; /*Important pour que la nav prenne toute la largeur*/
         }
 
         nav ul {
@@ -161,6 +171,32 @@
         .active {
             display: block;
         }
+
+        /* Styles pour la notation par étoiles */
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            flex-direction: row-reverse;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            color: #ddd;
+            font-size: 2em;
+            padding: 0 5px;
+            transition: color 0.3s ease;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input:checked ~ label {
+            color: #ffdb58;
+        }
     </style>
 </head>
 <body>
@@ -187,6 +223,19 @@
                     vous réservent. Nos astrologues experts partagent leurs connaissances
                     et leurs idées pour vous guider dans votre voyage.
                 </p>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5">
+                    <label for="star5" title="5 stars">★</label>
+                    <input type="radio" id="star4" name="rating" value="4">
+                    <label for="star4" title="4 stars">★</label>
+                    <input type="radio" id="star3" name="rating" value="3">
+                    <label for="star3" title="3 stars">★</label>
+                    <input type="radio" id="star2" name="rating" value="2">
+                    <label for="star2" title="2 stars">★</label>
+                    <input type="radio" id="star1" name="rating" value="1">
+                    <label for="star1" title="1 star">★</label>
+                </div>
+                <p id="star-rating-count">Note moyenne : 0 étoiles</p>
             </article>
             <article>
                 <h2>Les dernières prévisions astrologiques</h2>
@@ -205,6 +254,19 @@
                 <p>
                     L'image ci-dessus illustre un concept astrologique important.
                 </p>
+                <div class="star-rating">
+                    <input type="radio" id="star5_2" name="rating_2" value="5">
+                    <label for="star5_2" title="5 stars">★</label>
+                    <input type="radio" id="star4_2" name="rating_2" value="4">
+                    <label for="star4_2" title="4 stars">★</label>
+                    <input type="radio" id="star3_2" name="rating_2" value="3">
+                    <label for="star3_2" title="3 stars">★</label>
+                    <input type="radio" id="star2_2" name="rating_2" value="2">
+                    <label for="star2_2" title="2 stars">★</label>
+                    <input type="radio" id="star1_2" name="rating_2" value="1">
+                    <label for="star1_2" title="1 star">★</label>
+                </div>
+                <p id="star-rating-count">Note moyenne : 0 étoiles</p>
             </article>
             <article>
                 <h2>Article avec vidéo</h2>
@@ -218,6 +280,19 @@
                 <p>
                     La vidéo ci-dessus explore en profondeur un sujet astrologique.
                 </p>
+                <div class="star-rating">
+                    <input type="radio" id="star5_3" name="rating_3" value="5">
+                    <label for="star5_3" title="5 stars">★</label>
+                    <input type="radio" id="star4_3" name="rating_3" value="4">
+                    <label for="star4_3" title="4 stars">★</label>
+                    <input type="radio" id="star3_3" name="rating_3" value="3">
+                    <label for="star3_3" title="3 stars">★</label>
+                    <input type="radio" id="star2_3" name="rating_3" value="2">
+                    <label for="star2_3" title="2 stars">★</label>
+                    <input type="radio" id="star1_3" name="rating_3" value="1">
+                    <label for="star1_3" title="1 star">★</label>
+                </div>
+                <p id="star-rating-count">Note moyenne : 0 étoiles</p>
             </article>
         </main>
         <main id="about-content" class="hidden">
@@ -247,7 +322,6 @@
             <p>© 2024 Agence d'Astrologie. Tous droits réservés.</p>
         </footer>
     </div>
-
     <script>
        const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -278,6 +352,24 @@
             scene.add(star);
         }
 
+        // Ajout de planètes
+        const textureLoader = new THREE.TextureLoader();
+
+        const marsGeometry = new THREE.SphereGeometry(10, 32, 32);
+        const marsTexture = textureLoader.load('https://www.solarsystemscope.com/textures/download/2k_mars.jpg'); // Remplacez par le chemin de votre texture
+        const marsMaterial = new THREE.MeshBasicMaterial({ map: marsTexture });
+        const mars = new THREE.Mesh(marsGeometry, marsMaterial);
+        mars.position.set(-30, 20, -50);
+        scene.add(mars);
+
+        const jupiterGeometry = new THREE.SphereGeometry(15, 32, 32);
+        const jupiterTexture = textureLoader.load('https://www.solarsystemscope.com/textures/download/2k_jupiter.jpg');  // Remplacez par le chemin de votre texture
+        const jupiterMaterial = new THREE.MeshBasicMaterial({ map: jupiterTexture });
+        const jupiter = new THREE.Mesh(jupiterGeometry, jupiterMaterial);
+        jupiter.position.set(40, -10, -80);
+        scene.add(jupiter);
+
+
         camera.position.z = 5;
 
         function animate() {
@@ -293,6 +385,10 @@
                     star.position.y = (Math.random() - 0.5) * 2000;
                 }
             });
+            
+            // Animation des planètes (rotation simple)
+            mars.rotation.y += 0.01;
+            jupiter.rotation.y += 0.005;
 
             renderer.render(scene, camera);
         }
@@ -321,7 +417,22 @@
         });
 
         document.querySelector('nav ul li a[data-section="home"]').click();
+
+        // Gestion de la notation par étoiles
+        document.querySelectorAll('.star-rating input').forEach(input => {
+            input.addEventListener('change', function () {
+                const ratingValue = parseInt(this.value);
+                const starRatingElement = this.parentElement.nextElementSibling;
+                starRatingElement.textContent = `Note moyenne : ${ratingValue} étoiles`;
+                
+                // Vous pouvez également envoyer la note au serveur ici
+                // Par exemple :
+                // fetch('/api/rate-article', {
+                //     method: 'POST',
+                //     body: JSON.stringify({ articleId: this.closest('article').getAttribute('id'), rating: ratingValue })
+                // }).then(res => res.json()).then(data => console.log(data));
+            });
+        });
     </script>
 </body>
 </html>
-
